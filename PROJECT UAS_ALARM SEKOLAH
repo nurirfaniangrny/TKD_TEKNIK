@@ -1,0 +1,48 @@
+//Library RTC Module
+#include <virtuabotixRTC.h>
+//Inisialisasi Pin RTC Module (CLK 6, DAT 7, RST 8)
+virtuabotixRTC myRTC(6, 7, 8);
+
+//Inisialisasi Pin Positif Buzzer ke 9 dan nama inisial adalah speaker
+byte speaker = 9;
+
+void setup() {
+  Serial.begin(9600);
+  // Format setelan waktu dalam RTC Module:
+  // detik, menit, jam, hari ke berapa dalam minggu, tanggal, bulan, tahun
+  myRTC.setDS1302Time(00, 9, 13, 2, 20, 02, 2018);
+}
+
+void loop() {
+  myRTC.updateTime();
+  //Tampilan Tanggal dalam  Serial Print (Tanggal / Waktu:)
+  Serial.print("Tanggal / Waktu: ");
+  Serial.print(myRTC.dayofmonth);
+  Serial.print("/");
+  Serial.print(myRTC.month);
+  Serial.print("/");
+  Serial.print(myRTC.year);
+  //Spasi dalam serial print
+  Serial.print(" ");
+  ////Tampilan Waktu Serial Print (23:59:59)
+  Serial.print(myRTC.hours);
+  Serial.print(":");
+  Serial.print(myRTC.minutes);
+  Serial.print(":");
+  Serial.println(myRTC.seconds);
+
+  //Peringatan buzzer bunyi jika jam menunjukan waktu (13:9:15)
+  if (myRTC.hours == 13 & myRTC.minutes == 9 & myRTC.seconds == 15) {
+    //Volume Buzzer dan delay 2 detik untuk mematikan bunyi buzzer
+    tone(speaker, 2000);
+    delay(2000);
+    noTone(speaker);
+  }
+  //Peringatan buzzer bunyi jika jam menunjukan waktu (13:9:25)
+  else if (myRTC.hours == 13 & myRTC.minutes == 9 & myRTC.seconds == 25) {
+    //Volume Buzzer dan delay 2 detik untuk mematikan bunyi buzzer
+    tone(speaker, 2000);
+    delay(2000);
+    noTone(speaker);
+  }
+}
